@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -59,3 +60,19 @@ def delete_employee(request, pk):
 
     employee.delete()
     return Response({'message': 'Employee deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+
+# SEARCH Employees
+@api_view(['GET'])
+def search_employees(request):
+    query = request.query_params.get('q', None)  # Get the search query from URL parameters
+
+    if query:
+        # Search employees by name or email
+        employees = Employee.objects.filter(
+            Q(name__icontains=query) | Q(email__icontains=query)
+        )
+        serializer = EmployeeSerializer(employees, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'error': 'Please provide a search query'}, status=status.HTTP_400_BAD_REQUEST)
