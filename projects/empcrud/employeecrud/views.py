@@ -81,3 +81,15 @@ def search_employees(request):
 @api_view(['GET'])
 def api_status(request):
     return Response({'status': 'API is running successfully!'}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def filter_employees_by_position(request):
+    position = request.query_params.get('position', None)
+
+    if position:
+        # Filter employees by position
+        employees = Employee.objects.filter(position__iexact=position)
+        serializer = EmployeeSerializer(employees, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'error': 'Please provide a position to filter by'}, status=status.HTTP_400_BAD_REQUEST)
