@@ -93,3 +93,11 @@ def filter_employees_by_position(request):
         return Response(serializer.data)
     else:
         return Response({'error': 'Please provide a position to filter by'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(['GET'])
+def employee_count(request):
+    total_employees = Employee.objects.count()
+    return Response({'total_employees': total_employees}, status=status.HTTP_200_OK)

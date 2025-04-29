@@ -10,5 +10,7 @@ urlpatterns = [
     path('employees/<int:pk>/delete/', views.delete_employee, name='delete-employee'),
     path('api/status/', views.api_status, name='api_status'),
     path('employees/filter/', views.filter_employees_by_position, name='filter_employees_by_position'),
+    path('employees/count/', views.employee_count, name='employee_count'),
+
 
 ]
