@@ -8,4 +8,5 @@ urlpatterns = [
     path('employees/<int:pk>/', views.get_employee, name='get-employee'),
     path('employees/<int:pk>/update/', views.update_employee, name='update-employee'),
     path('employees/<int:pk>/delete/', views.delete_employee, name='delete-employee'),
+    path('api/status/', views.api_status, name='api_status'),
 ]

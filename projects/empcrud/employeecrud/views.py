@@ -76,3 +76,8 @@ def search_employees(request):
         return Response(serializer.data)
     else:
         return Response({'error': 'Please provide a search query'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def api_status(request):
+    return Response({'status': 'API is running successfully!'}, status=status.HTTP_200_OK)
