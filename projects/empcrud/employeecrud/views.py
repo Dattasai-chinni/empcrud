@@ -65,7 +65,7 @@ def delete_employee(request, pk):
 # SEARCH Employees
 @api_view(['GET'])
 def search_employees(request):
-    query = request.query_params.get('q', None)  # Get the search query from URL parameters
+    query = request.query_params.get('q', None)
 
     if query:
         # Search employees by name or email
