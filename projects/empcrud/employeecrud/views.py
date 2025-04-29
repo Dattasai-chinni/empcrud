@@ -23,12 +23,11 @@ def list_employees(request):
     return Response(serializer.data)
 
 
-# RETRIEVE Single Employee
 @api_view(['GET'])
 def get_employee(request, pk):
-    try:
-        employee = Employee.objects.get(pk=pk)
-    except Employee.DoesNotExist:
+    employee = Employee.objects.filter(pk=pk).first()
+
+    if not employee:
         return Response({'error': 'Employee not found'}, status=status.HTTP_404_NOT_FOUND)
 
     serializer = EmployeeSerializer(employee)
