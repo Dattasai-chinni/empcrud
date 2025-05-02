@@ -8,37 +8,24 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js (ensure you're using a version compatible with semantic-release)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
+          node-version: '21.6.2'  # You can change the Node.js version if needed
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.12.2
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 21.6.2
-
-      - name: Install Node.js dependencies
-        run: npm install
-
-      - name: Run standard-version
-        run: npx standard-version
-
-      - name: Commit release changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "chore(release): $(node -p "require('./package.json').version")" || echo "No changes to commit"
-
-      - name: Push changes and tags
-        run: git push --follow-tags origin main
+      # Step 4: Run semantic-release to handle versioning and publishing the release
+      - name: Run semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Using the GH_TOKEN secret stored earlier
+        run: npx semantic-release
